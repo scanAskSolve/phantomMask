@@ -15,6 +15,7 @@ public class TableService {
     public void initTable(){
 
         itableInitDao.createPharmacyTable();
+        itableInitDao.createPharmacyOpeningHoursTable();
         itableInitDao.createMaskTable();
         itableInitDao.createUser();
         itableInitDao.createTransactionHistory();

@@ -13,7 +13,6 @@ public interface ITableInitDao {
             "\t`pharmacy_id` INT(11) NOT NULL AUTO_INCREMENT,\n" +
             "\t`name` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',\n" +
             "\t`cashBalance` DOUBLE NOT NULL DEFAULT '0',\n" +
-            "\t`openingHours` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',\n" +
             "\t`create_time` DATETIME NOT NULL DEFAULT curtime(),\n" +
             "\tPRIMARY KEY (`pharmacy_id`) USING BTREE,\n" +
             "\tINDEX `name` (`name`) USING BTREE\n" +
@@ -22,6 +21,21 @@ public interface ITableInitDao {
             "ENGINE=InnoDB\n" +
             ";")
     void createPharmacyTable();
+
+    @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`pharmacy_opening_hours` (\n" +
+            "\t`pharmacy_opening_hours_id` INT(11) NOT NULL AUTO_INCREMENT,\n" +
+            "\t`pharmacy_id` INT(11) NOT NULL,\n" +
+            "\t`open_hours_start` TIME NOT NULL,\n" +
+            "\t`open_hours_end` TIME NOT NULL,\n" +
+            "\t`open_week` INT(11) NOT NULL COMMENT '0->星期一 6->星期日',\n" +
+            "\tPRIMARY KEY (`pharmacy_opening_hours_id`) USING BTREE,\n" +
+            "\tINDEX `FK__pharmacy` (`pharmacy_id`) USING BTREE,\n" +
+            "\tCONSTRAINT `FK__pharmacy` FOREIGN KEY (`pharmacy_id`) REFERENCES `pharmacy` (`pharmacy_id`) ON UPDATE NO ACTION ON DELETE NO ACTION\n" +
+            ")\n" +
+            "COLLATE='utf8mb4_general_ci'\n" +
+            "ENGINE=InnoDB\n" +
+            ";")
+    void createPharmacyOpeningHoursTable();
 
     @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`mask` (\n" +
             "\t`mask_id` INT(11) NOT NULL AUTO_INCREMENT,\n" +

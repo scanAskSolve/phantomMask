@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class PharmaciesController {
 
@@ -17,8 +19,8 @@ public class PharmaciesController {
 
     @PostMapping("/Pharmacies")
     @ResponseBody
-    public Object SavePharmacies(@RequestBody @Validated PharmaciesRo pharmaciesRo) {
-        pharmaciesService.savePharmacies(pharmaciesRo);
+    public Object SavePharmacies(@RequestBody List<PharmaciesRo> pharmaciesRoList) {
+        pharmaciesService.savePharmacies(pharmaciesRoList);
         return "OK";
     }
 }
