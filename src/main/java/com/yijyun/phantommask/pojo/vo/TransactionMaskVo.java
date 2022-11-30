@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TransactionVo {
+public class TransactionMaskVo {
     String name;
-    Double totalAmount;
+    Integer totalMaskAmount;
+    Double totalPriceAmount;
 }

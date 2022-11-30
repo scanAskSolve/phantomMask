@@ -27,18 +27,31 @@ public class SearchController {
         return searchService.searchPharmaciesByPrice(low, high);
     }
 
+
     @GetMapping("/Mask")
     @ResponseBody
     public MessageVo SearchMaskByPharmacy(@RequestParam String Pharmacy) {
         return searchService.SearchMaskByPharmacy(Pharmacy);
     }
 
-    @GetMapping("/Transaction")
+    @GetMapping("/Transaction/Mask/Top")
     @ResponseBody
     public MessageVo SearchTransactionByDate(@RequestParam String startDate,@RequestParam String endDate,@RequestParam Integer limit) {
         MessageVo messageVo = searchService.checkSearchDate(startDate, endDate);
         if (messageVo.getErrorCode() == 200)
-            messageVo = searchService.searchTransactionByDate(startDate, endDate,limit);
+            messageVo = searchService.searchTransactionMaskByDate(startDate, endDate,limit);
         return messageVo;
+    }
+    @GetMapping("/Transaction/Mask")
+    @ResponseBody
+    public MessageVo SearchTransactionByDate(@RequestParam String startDate,@RequestParam String endDate) {
+        MessageVo messageVo = searchService.checkSearchDate(startDate, endDate);
+        if (messageVo.getErrorCode() == 200)
+            messageVo = searchService.searchTransactionMaskPriceByDate(startDate, endDate);
+        return messageVo;
+    }
+    @GetMapping("/findPharmaciesOrMasks")
+    public MessageVo findPharmaciesOrMasks(@RequestParam String keyword){
+        return searchService.findPharmaciesOrMasks(keyword);
     }
 }

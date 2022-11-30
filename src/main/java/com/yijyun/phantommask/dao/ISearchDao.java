@@ -2,6 +2,7 @@ package com.yijyun.phantommask.dao;
 
 import com.yijyun.phantommask.pojo.dto.MaskDto;
 import com.yijyun.phantommask.pojo.dto.PharmaciesDto;
+import com.yijyun.phantommask.pojo.vo.TransactionMaskVo;
 import com.yijyun.phantommask.pojo.vo.TransactionVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,11 +35,28 @@ public interface ISearchDao {
             "where price > #{low} AND price < #{high} ")
     List<Integer> searchMaskByPrice(@Param("low") Double low,@Param("high") Double high);
 
-    @Select("SELECT user.name,SUM(transaction_history.transaction_amount) AS totalAmount FROM `phantom_mask`.`transaction_history` AS transaction_history\n" +
-            "JOIN `phantom_mask`.`user` AS user ON transaction_history.user_id = user.user_id\n" +
+    @Select("SELECT user.name,SUM(mask.per) AS totalAmount FROM `phantom_mask`.`transaction_history` AS transaction_history\n" +
+            "JOIN `phantom_mask`.`user` AS user ON transaction_history.user_id = user.user_id\n " +
+            "JOIN `phantom_mask`.`mask` AS mask ON transaction_history.mask_name = mask.name " +
             "where transaction_date>#{start} AND transaction_date<#{end}" +
             "GROUP BY transaction_history.user_id\n" +
             "ORDER BY totalAmount DESC " +
             "limit ${limit}")
-    List<TransactionVo> searchTransactionByDate(@Param("start") String start,@Param("end") String end,@Param("limit") Integer limit);
+    List<TransactionVo> searchTransactionMaskByDate(@Param("start") String start,@Param("end") String end,@Param("limit") Integer limit);
+
+    @Select("SELECT TS.mask_name AS name, SUM(mask.per) AS totalMaskAmount ,SUM(TS.transaction_amount) AS totalPriceAmount " +
+            "FROM `phantom_mask`.`transaction_history` AS TS\n" +
+            "JOIN `phantom_mask`.`mask` AS mask ON TS.mask_name = mask.name\n" +
+            "where TS.transaction_date > #{start} AND TS.transaction_date < #{end}" +
+            "GROUP BY TS.mask_name")
+    List<TransactionMaskVo> searchTransactionMaskPriceByDate(@Param("start") String start, @Param("end") String end);
+
+    @Select("SELECT `name` FROM \n" +
+            "(\n" +
+            "SELECT `name` FROM `phantom_mask`.`pharmacy`\n" +
+            "UNION all\n" +
+            "SELECT `name` FROM `phantom_mask`.`mask`\n" +
+            ") a \n" +
+            "WHERE name LIKE '%${keyword}%'")
+    List<String> findPharmaciesOrMasks(@Param("keyword") String keyword);
 }

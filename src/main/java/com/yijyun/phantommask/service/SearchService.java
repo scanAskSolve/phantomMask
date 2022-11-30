@@ -5,6 +5,7 @@ import com.yijyun.phantommask.dao.ISearchDao;
 import com.yijyun.phantommask.pojo.dto.MaskDto;
 import com.yijyun.phantommask.pojo.dto.PharmaciesDto;
 import com.yijyun.phantommask.pojo.vo.MessageVo;
+import com.yijyun.phantommask.pojo.vo.TransactionMaskVo;
 import com.yijyun.phantommask.pojo.vo.TransactionVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,8 +79,18 @@ public class SearchService {
         return new MessageVo(StatusEnum.SUCCESS, pharmaciesList);
     }
 
-    public MessageVo searchTransactionByDate(String startDate, String endDate, Integer limit) {
-        List<TransactionVo> transactionVoList = iSearchDao.searchTransactionByDate(startDate, endDate, limit);
+    public MessageVo searchTransactionMaskByDate(String startDate, String endDate, Integer limit) {
+        List<TransactionVo> transactionVoList = iSearchDao.searchTransactionMaskByDate(startDate, endDate, limit);
         return new MessageVo(StatusEnum.SUCCESS, transactionVoList);
+    }
+
+    public MessageVo searchTransactionMaskPriceByDate(String startDate, String endDate){
+        List<TransactionMaskVo> transactionMaskVoList = iSearchDao.searchTransactionMaskPriceByDate(startDate, endDate);
+        return new MessageVo(StatusEnum.SUCCESS, transactionMaskVoList);
+    }
+
+    public MessageVo findPharmaciesOrMasks(String keyword){
+        List<String> keywordList = iSearchDao.findPharmaciesOrMasks(keyword);
+        return new MessageVo(StatusEnum.SUCCESS, keywordList);
     }
 }
