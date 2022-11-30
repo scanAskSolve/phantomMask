@@ -66,16 +66,14 @@ public interface ITableInitDao {
     @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`transaction_history` (\n" +
             "\t`transaction_history_id` INT(11) NOT NULL AUTO_INCREMENT,\n" +
             "\t`user_id` INT(11) NOT NULL,\n" +
-            "\t`pharmacy_id` INT(11) NOT NULL,\n" +
-            "\t\t`cost` DOUBLE NOT NULL DEFAULT '0',\n" +
-            "\t`mask_id` INT(11) NOT NULL,\n" +
+            "\t`pharmacy_name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',\n" +
+            "\t`transaction_amount` DOUBLE NOT NULL DEFAULT '0',\n" +
+            "\t`mask_name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',\n" +
+            "\t`transaction_date` DATETIME NULL DEFAULT NULL,\n" +
             "\tPRIMARY KEY (`transaction_history_id`) USING BTREE,\n" +
             "\tINDEX `FK_transaction_history_user` (`user_id`) USING BTREE,\n" +
-            "\tINDEX `FK_transaction_history_pharmacy` (`pharmacy_id`) USING BTREE,\n" +
-            "\tINDEX `FK_transaction_history_mask` (`mask_id`) USING BTREE,\n" +
-            "\tCONSTRAINT `FK_transaction_history_mask` FOREIGN KEY (`mask_id`) REFERENCES `mask` (`mask_id`) ON UPDATE NO ACTION ON DELETE NO ACTION,\n" +
-            "\tCONSTRAINT `FK_transaction_history_pharmacy` FOREIGN KEY (`pharmacy_id`) REFERENCES `pharmacy` (`pharmacy_id`) ON UPDATE NO ACTION ON DELETE NO ACTION,\n" +
-            "\tCONSTRAINT `FK_transaction_history_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON UPDATE NO ACTION ON DELETE NO ACTION\n" +
+            "\tINDEX `FK_transaction_history_pharmacy` (`pharmacy_name`) USING BTREE,\n" +
+            "\tINDEX `FK_transaction_history_mask` (`mask_name`) USING BTREE\n" +
             ")\n" +
             "COLLATE='utf8mb4_general_ci'\n" +
             "ENGINE=InnoDB\n" +

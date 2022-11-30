@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PharmaciesDto {
-    Integer pharmacyId;
-    String name;
-    Double cashBalance;
+public class PurchaseHistoriesDto {
+    Integer userId;
+    String pharmacyName;
+    String maskName;
+    Double transactionAmount;
+    String transactionDate;
 }

@@ -1,6 +1,7 @@
 package com.yijyun.phantommask.service;
 
 import com.yijyun.phantommask.dao.IPharmaciesDao;
+import com.yijyun.phantommask.pojo.dto.MaskDto;
 import com.yijyun.phantommask.pojo.dto.PharmaciesDto;
 import com.yijyun.phantommask.pojo.dto.PharmacyOpeningHoursDto;
 import com.yijyun.phantommask.pojo.ro.PharmaciesRo;
@@ -9,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,15 +29,19 @@ public class PharmaciesService {
             PharmaciesDto pharmaciesDto = new PharmaciesDto();
             BeanUtils.copyProperties(pharmaciesRo, pharmaciesDto);
             iPharmaciesDao.setPharmacy(pharmaciesDto);
+            formatOpeneHours(pharmaciesRo.getOpeningHours(), pharmaciesDto.getPharmacyId());
 
-            formatOpneHours(pharmaciesRo.getOpeningHours(), pharmaciesDto.getPharmaciesId());
-
-            // create 商店
-            //foreach create mask
+            pharmaciesRo.getMasks().forEach(masks -> {
+                MaskDto maskDto = new MaskDto();
+                maskDto.setPharmacyId(pharmaciesDto.getPharmacyId());
+                maskDto.setName(masks.getName());
+                maskDto.setPrice(masks.getPrice());
+                iPharmaciesDao.setMask(maskDto);
+            });
         });
     }
 
-    void formatOpneHours(String openingHours, Integer pharmaciesId) {
+    void formatOpeneHours(String openingHours, Integer pharmaciesId) {
 
         HashMap<String, Integer> weekMap = getWeekMap();
         List<String> openHoursList = Arrays.asList(openingHours.split("/"));
@@ -44,13 +50,12 @@ public class PharmaciesService {
             Matcher matcher = pattern.matcher(opening);
             if (matcher.find()) {
                 String[] time = matcher.group(0).trim().split("-");
-                System.out.println("start time:" + time[0] + " end time:" + time[1]);
                 Pattern patternWeek;
                 if (Pattern.compile(",").matcher(opening).find()) {
                     patternWeek = Pattern.compile("[A-Z][a-z][a-z]+?");
                     matcher = patternWeek.matcher(opening);
                     while (matcher.find()) {
-                        System.out.println(matcher.group());
+                        // TODO: 2022/11/30 時間經過24:00後的星期要改
                         PharmacyOpeningHoursDto pharmacyOpeningHoursDto = new PharmacyOpeningHoursDto();
                         pharmacyOpeningHoursDto.setPharmacyId(pharmaciesId);
                         pharmacyOpeningHoursDto.setOpenHoursStart(time[0]);
@@ -64,7 +69,6 @@ public class PharmaciesService {
                     matcher = patternWeek.matcher(opening);
                     if (matcher.find()) {
                         String[] week = matcher.group(0).trim().split("-");
-                        System.out.println(week[0] + ":::" + week[1]);
                         for (int i = weekMap.get(week[0].trim()); i < weekMap.get(week[1].trim()); i++) {
                             PharmacyOpeningHoursDto pharmacyOpeningHoursDto = new PharmacyOpeningHoursDto();
                             pharmacyOpeningHoursDto.setPharmacyId(pharmaciesId);

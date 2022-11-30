@@ -1,4 +1,4 @@
-package com.yijyun.phantommask.pojo.dto;
+package com.yijyun.phantommask.pojo.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class PharmaciesDto {
-    Integer pharmacyId;
+public class TransactionVo {
     String name;
-    Double cashBalance;
+    String totalAmount;
 }
