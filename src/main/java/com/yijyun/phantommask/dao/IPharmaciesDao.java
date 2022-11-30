@@ -21,8 +21,8 @@ public interface IPharmaciesDao {
     @Options(useGeneratedKeys=true, keyProperty="pharmacyOpeningHoursId")
     void setPharmacyOpeningHours(@Param("bean") PharmacyOpeningHoursDto pharmacyOpeningHoursDto);
 
-    @Insert("INSERT INTO `phantom_mask`.`mask` (pharmacy_id,name,price) Values " +
-            "(#{bean.pharmacyId},#{bean.name},#{bean.price})")
+    @Insert("INSERT INTO `phantom_mask`.`mask` (pharmacy_id,name,price,per) Values " +
+            "(#{bean.pharmacyId},#{bean.name},#{bean.price},#{bean.per})")
     @Options(useGeneratedKeys=true, keyProperty="maskId")
     void setMask(@Param("bean") MaskDto maskDto);
 }

@@ -12,14 +12,14 @@ public interface ITableInitDao {
     @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`pharmacy` (\n" +
             "\t`pharmacy_id` INT(11) NOT NULL AUTO_INCREMENT,\n" +
             "\t`name` VARCHAR(50) NOT NULL DEFAULT '0' COLLATE 'utf8mb4_general_ci',\n" +
-            "\t`cashBalance` DOUBLE NOT NULL DEFAULT '0',\n" +
+            "\t`cash_balance` DOUBLE NOT NULL DEFAULT '0',\n" +
             "\t`create_time` DATETIME NOT NULL DEFAULT curtime(),\n" +
             "\tPRIMARY KEY (`pharmacy_id`) USING BTREE,\n" +
             "\tINDEX `name` (`name`) USING BTREE\n" +
             ")\n" +
             "COLLATE='utf8mb4_general_ci'\n" +
             "ENGINE=InnoDB\n" +
-            ";")
+            ";\n")
     void createPharmacyTable();
 
     @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`pharmacy_opening_hours` (\n" +
@@ -42,6 +42,7 @@ public interface ITableInitDao {
             "\t`pharmacy_id` INT(11) NOT NULL,\n" +
             "\t`name` VARCHAR(50) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',\n" +
             "\t`price` DOUBLE NOT NULL DEFAULT '0',\n" +
+            "\t`per` INT(11) NOT NULL DEFAULT '0',\n" +
             "\t`create_time` DATETIME NOT NULL DEFAULT curtime(),\n" +
             "\tPRIMARY KEY (`mask_id`) USING BTREE,\n" +
             "\tINDEX `FK_mask_pharmacy` (`pharmacy_id`) USING BTREE,\n" +
@@ -49,7 +50,8 @@ public interface ITableInitDao {
             ")\n" +
             "COLLATE='utf8mb4_general_ci'\n" +
             "ENGINE=InnoDB\n" +
-            ";")
+            "AUTO_INCREMENT=96\n" +
+            ";\n")
     void createMaskTable();
 
     @Update("CREATE TABLE IF NOT EXISTS `phantom_mask`.`user` (\n" +

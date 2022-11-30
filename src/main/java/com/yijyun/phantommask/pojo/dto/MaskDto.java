@@ -12,4 +12,5 @@ public class MaskDto {
     Integer pharmacyId;
     String name;
     Double price;
+    Integer per;
 }
